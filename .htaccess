@@ -1,0 +1,11 @@
+# Tienda base slice 1: block sensitive files from web access.
+<Files "config.env.php">
+    Require all denied
+</Files>
+<Files "install.lock">
+    Require all denied
+</Files>
+<FilesMatch "\.sql$">
+    Require all denied
+</FilesMatch>
+RedirectMatch 403 ^(.*/)?cache/.*$

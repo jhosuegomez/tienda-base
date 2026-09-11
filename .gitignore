@@ -1,0 +1,16 @@
+# Secrets & per-install state — NEVER commit these
+config.env.php
+install.lock
+
+# Runtime data (regenerated at install/first run)
+cache/*
+uploads/*
+!uploads/.htaccess
+
+# Build artifacts & tooling
+*.zip
+.gstack/
+
+# OS junk
+Thumbs.db
+.DS_Store
