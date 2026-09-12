@@ -268,6 +268,11 @@ tbody tr:hover { background: color-mix(in srgb, var(--primary) 4%, transparent);
   .admin-page-head h1 { flex: 1 1 100%; }
   .admin-page-head .admin-primary-action { flex: 1 1 auto; justify-content: center; }
 }
+@media (max-width: 639px) {
+  .bagisto-perks { gap: 0; }
+  .bagisto-perks > div:nth-child(n) { border-left: 0; }
+  .bagisto-perks > div + div { border-top: 1px solid var(--shop-border); }
+}
 .shop-footer .footer-heading svg { flex-shrink: 0; }
 .shop-footer a { position: relative; padding-left: .85rem; }
 .shop-footer a::before { content: ""; position: absolute; left: .1rem; top: .65em; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
