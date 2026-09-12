@@ -260,6 +260,14 @@ tbody tr:hover { background: color-mix(in srgb, var(--primary) 4%, transparent);
   .admin-sidebar .bagisto-admin-nav a { flex-shrink: 0; }
 }
 .shop-footer .footer-heading { display: flex; align-items: center; gap: .5rem; }
+.admin-page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; }
+@media (max-width: 767px) {
+  .admin-sidebar .bagisto-admin-nav { flex-wrap: nowrap; max-height: none; }
+  .admin-sidebar .bagisto-admin-nav .admin-nav-group { display: contents; }
+  .admin-sidebar .bagisto-admin-nav .admin-nav-label { display: none; }
+  .admin-page-head h1 { flex: 1 1 100%; }
+  .admin-page-head .admin-primary-action { flex: 1 1 auto; justify-content: center; }
+}
 .shop-footer .footer-heading svg { flex-shrink: 0; }
 .shop-footer a { position: relative; padding-left: .85rem; }
 .shop-footer a::before { content: ""; position: absolute; left: .1rem; top: .65em; width: 4px; height: 4px; border-radius: 50%; background: currentColor; }

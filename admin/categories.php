@@ -174,7 +174,7 @@ if ($editId > 0) {
 $showEditor = $editing !== null || isset($_GET['new']) || (($errors !== []) && ($_POST['section'] ?? '') === 'cat_add');
 $csrf = csrf_token();
 ?>
-<div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+<div class="admin-page-head mb-4">
   <h1 class="text-2xl font-extrabold text-slate-900">Categorías</h1>
   <a class="admin-primary-action" href="index.php?r=admin/categories&amp;new=1">Crear categoría</a>
   <a class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:border-[var(--primary)] hover:text-[var(--primary)]" href="index.php?r=admin/products">Ver productos</a>
