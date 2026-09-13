@@ -2,7 +2,8 @@ FROM php:8.3-apache
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libzip-dev \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install -j$(nproc) pdo_mysql intl gd \
+ && docker-php-ext-install -j$(nproc) pdo_mysql mbstring intl gd zip opcache \
+ && docker-php-ext-enable opcache \
  && a2enmod rewrite \
  && rm -rf /var/lib/apt/lists/*
 COPY . /var/www/html/

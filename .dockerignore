@@ -1,0 +1,11 @@
+# Keep the deploy image lean: no history, tooling, tests or local state.
+.git/
+.gstack/
+tests/
+design-system/
+*.zip
+config.env.php
+install.lock
+cache/
+uploads/
+FIRST-LIVE-INSTALL-CHECKLIST.md
