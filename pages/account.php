@@ -58,7 +58,7 @@ try {
   <div>
     <span class="commerce-eyebrow">Tu espacio</span>
     <h1 class="commerce-title mt-1 text-slate-950">¡Hola <?php echo esc($greetName); ?>!</h1>
-    <p class="mt-1 text-sm text-slate-500">Esta es tu cuenta: pedidos, favoritos, direcciones y más.</p>
+    <p class="mt-1 text-sm text-slate-500">Esta es tu cuenta: pedidos, favoritos, direcciones y más. <a class="font-semibold text-[var(--primary)] hover:underline" href="index.php?r=account/profile">Editar la información de tu perfil</a></p>
 
     <?php if ($loadError): ?>
       <div class="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">No pudimos cargar tu cuenta. Intentá de nuevo más tarde.</div>
