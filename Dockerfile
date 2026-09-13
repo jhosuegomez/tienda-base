@@ -1,6 +1,6 @@
 FROM php:8.3-apache
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libzip-dev \
+    libicu-dev libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libonig-dev \
  && docker-php-ext-configure gd --with-freetype --with-jpeg \
  && docker-php-ext-install -j$(nproc) pdo_mysql mbstring intl gd zip opcache \
  && docker-php-ext-enable opcache \
