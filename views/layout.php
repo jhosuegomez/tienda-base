@@ -166,33 +166,70 @@ try {
         <a class="rounded-xl bg-[var(--primary)] px-4 py-2.5 font-bold text-white hover:brightness-105" href="index.php?r=auth/register">Crear cuenta</a>
       <?php endif; ?>
     </nav>
-    <details class="mobile-menu ml-auto md:hidden">
-      <summary class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold" aria-label="Abrir menú"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menú</summary>
-      <div class="absolute inset-x-0 top-full border-b border-slate-200 bg-white px-4 py-4 shadow-lg">
-        <form class="mb-3 flex" method="get" action="index.php" role="search"><input type="hidden" name="r" value="shop/search"><input class="w-full rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 py-2 text-sm" type="search" name="q" maxlength="100" placeholder="Buscar productos…"><button class="rounded-r-lg bg-[var(--primary)] px-3 text-sm font-semibold text-white" type="submit">Buscar</button></form>
-        <div class="flex flex-col gap-2 text-sm font-medium">
-          <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=home">Inicio</a>
-          <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=shop/cart">Carrito (<?php echo esc((string) $cartWidget['count']); ?>) · <?php echo esc(money_q($cartWidget['subtotal'])); ?></a>
-          <?php if ($showCategoryNav && $menuCats !== []): ?>
-            <p class="px-2 pt-2 text-xs font-bold uppercase tracking-wide text-slate-400">Categorías</p>
-            <?php foreach ($menuCats as $mc): ?>
-              <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=shop/category/<?php echo esc(rawurlencode((string) ($mc['slug'] ?? ''))); ?>"><?php echo esc((string) ($mc['name'] ?? '')); ?></a>
-            <?php endforeach; ?>
-          <?php endif; ?>
-          <?php if ($viewer !== null && $viewer['role'] === 'store_admin'): ?>
-            <a class="rounded-lg bg-[var(--primary)] px-2 py-2 text-center font-semibold text-white" href="index.php?r=admin/home">Administrar tienda</a>
-          <?php endif; ?>
+    <div class="mobile-drawer ml-auto md:hidden">
+      <input class="mobile-drawer-toggle" type="checkbox" id="menu-movil">
+      <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold" for="menu-movil" aria-label="Abrir menú"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menú</label>
+      <label class="mobile-drawer-scrim" for="menu-movil" aria-hidden="true"></label>
+      <div class="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Menú">
+        <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
+          <span class="text-base font-extrabold tracking-tight text-slate-950"><?php echo esc($storeName); ?></span>
+          <label class="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-slate-200 text-lg leading-none text-slate-600" for="menu-movil" aria-label="Cerrar menú">×</label>
+        </div>
+        <div class="border-b border-slate-100 px-4 py-4">
           <?php if ($viewer !== null): ?>
-            <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=account">Mi cuenta</a>
-            <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=account/notifications">Notificaciones<?php echo ($notifUnread > 0) ? ' (' . esc((string) $notifUnread) . ')' : ''; ?></a>
-            <a class="rounded-lg px-2 py-1.5 hover:bg-slate-100" href="index.php?r=auth/logout">Salir (<?php echo esc($viewer['email']); ?>)</a>
+            <?php $drawerName = (string) (explode('@', (string) $viewer['email'])[0] ?? $viewer['email']); ?>
+            <a class="flex items-center gap-3" href="index.php?r=account">
+              <span class="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--primary)] text-base font-black text-white"><?php echo esc(mb_strtoupper(mb_substr($drawerName, 0, 1))); ?></span>
+              <span class="min-w-0"><span class="block truncate text-sm font-bold text-slate-900"><?php echo esc($drawerName); ?></span><span class="block truncate text-xs text-slate-500"><?php echo esc((string) $viewer['email']); ?> · Ver mi cuenta</span></span>
+            </a>
           <?php else: ?>
-            <a class="rounded-lg bg-[var(--primary)] px-2 py-2 text-center font-semibold text-white" href="index.php?r=auth/login">Ingresar</a>
-            <a class="rounded-lg border border-slate-200 px-2 py-2 text-center" href="index.php?r=auth/register">Crear cuenta</a>
+            <div class="grid grid-cols-2 gap-2">
+              <a class="rounded-lg bg-[var(--primary)] px-2 py-2.5 text-center text-sm font-semibold text-white" href="index.php?r=auth/login">Ingresar</a>
+              <a class="rounded-lg border border-slate-200 px-2 py-2.5 text-center text-sm font-semibold" href="index.php?r=auth/register">Crear cuenta</a>
+            </div>
           <?php endif; ?>
         </div>
+        <div class="px-4 py-3">
+          <form class="flex" method="get" action="index.php" role="search"><input type="hidden" name="r" value="shop/search"><input class="w-full rounded-l-lg border border-r-0 border-slate-300 bg-slate-50 px-3 py-2 text-sm" type="search" name="q" maxlength="100" placeholder="Buscar productos…" aria-label="Buscar productos"><button class="rounded-r-lg bg-[var(--primary)] px-3 text-sm font-semibold text-white" type="submit">Buscar</button></form>
+        </div>
+        <nav class="flex flex-col gap-1 px-4 pb-8 text-sm font-medium">
+          <p class="account-nav-label">Explorar</p>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=home">Inicio</a>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=shop/search">Ver todo</a>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=shop/cart">Carrito (<?php echo esc((string) $cartWidget['count']); ?>) · <?php echo esc(money_q($cartWidget['subtotal'])); ?></a>
+          <?php if ($menuCats !== []): ?>
+            <p class="account-nav-label">Categorías</p>
+            <?php foreach ($menuCats as $mc): ?>
+              <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=shop/category/<?php echo esc(rawurlencode((string) ($mc['slug'] ?? ''))); ?>"><?php echo esc((string) ($mc['name'] ?? '')); ?></a>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if ($menuBrands !== []): ?>
+            <p class="account-nav-label">Marcas</p>
+            <?php foreach ($menuBrands as $mb): ?>
+              <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=shop/brand/<?php echo esc(rawurlencode((string) ($mb['slug'] ?? ''))); ?>"><?php echo esc((string) ($mb['name'] ?? '')); ?></a>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if ($viewer !== null): ?>
+            <p class="account-nav-label">Mi cuenta</p>
+            <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=account/orders">Mis pedidos</a>
+            <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=account/favorites">Favoritos</a>
+            <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=account/notifications">Notificaciones<?php echo ($notifUnread > 0) ? ' (' . esc((string) $notifUnread) . ')' : ''; ?></a>
+            <?php if ($viewer['role'] === 'store_admin'): ?>
+              <a class="mt-1 rounded-lg bg-[var(--primary)] px-2 py-2.5 text-center font-semibold text-white" href="index.php?r=admin/home">Administrar tienda</a>
+            <?php endif; ?>
+            <a class="rounded-lg px-2 py-2 text-slate-500 hover:bg-slate-100" href="index.php?r=auth/logout">Salir (<?php echo esc($viewer['email']); ?>)</a>
+          <?php endif; ?>
+          <p class="account-nav-label">Ayuda</p>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=help/garantias">Garantías</a>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=help/ubicaciones">Ubicaciones</a>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=help/faq">Preguntas frecuentes</a>
+          <a class="rounded-lg px-2 py-2 hover:bg-slate-100" href="index.php?r=help/envios">Envíos</a>
+        </nav>
       </div>
-    </details>
+      <script>
+      (function(){var t=document.getElementById('menu-movil');if(!t)return;t.addEventListener('change',function(){document.body.style.overflow=t.checked?'hidden':'';});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&t.checked){t.checked=false;document.body.style.overflow='';}});})();
+      </script>
+    </div>
   </div>
   <?php if ($showCategoryNav): ?>
   <nav class="hidden border-t border-slate-100 md:block" aria-label="Categorías">
