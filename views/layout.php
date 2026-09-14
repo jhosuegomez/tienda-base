@@ -168,9 +168,9 @@ try {
         <a class="rounded-xl bg-[var(--primary)] px-4 py-2.5 font-bold text-white hover:brightness-105" href="index.php?r=auth/register">Crear cuenta</a>
       <?php endif; ?>
     </nav>
-    <div class="mobile-drawer ml-auto md:hidden">
+    <div class="mobile-drawer md:hidden" style="order:-1">
       <input class="mobile-drawer-toggle" type="checkbox" id="menu-movil">
-      <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold" for="menu-movil" aria-label="Abrir menú"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>Menú</label>
+      <label class="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center p-2 text-slate-900" for="menu-movil" aria-label="Abrir menú"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></label>
       <label class="mobile-drawer-scrim" for="menu-movil" aria-hidden="true"></label>
       <div class="mobile-drawer-panel" role="dialog" aria-modal="true" aria-label="Menú">
         <div class="flex items-center justify-between border-b border-slate-100 px-4 py-3">
