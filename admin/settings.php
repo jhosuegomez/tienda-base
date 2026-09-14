@@ -10,6 +10,7 @@ $title = 'Ajustes de la tienda';
 $okMessages = [];
 $errors = [];
 $cardTestResult = '';
+$mailTestResult = '';
 
 function settings_is_hex_color(string $v): bool
 {
@@ -450,6 +451,25 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     $okMessages[] = 'Configuración de correo guardada.';
                     break;
                 }
+                case 'mail_test': {
+                    $mailTestTo = trim((string) ($_POST['mail_test_to'] ?? ''));
+                    if ($mailTestTo === '' || !filter_var($mailTestTo, FILTER_VALIDATE_EMAIL) || strlen($mailTestTo) > 190) {
+                        $errors[] = 'Escribí un correo destino válido para la prueba.';
+                        break;
+                    }
+                    $testRes = Mailer::send(
+                        $mailTestTo,
+                        'Correo de prueba de ' . (string) setting('store.name', 'tu tienda'),
+                        'Si recibís este mensaje, el envío de correos de la tienda está configurado correctamente.'
+                    );
+                    if ($testRes['ok']) {
+                        $mailTestResult = 'Correo de prueba enviado a ' . $mailTestTo . '.';
+                        $okMessages[] = 'Prueba de correo exitosa.';
+                    } else {
+                        $errors[] = 'La prueba falló: ' . $testRes['error'];
+                    }
+                    break;
+                }
                 case 'cron_regen': {
                     Settings::set('cron.token', bin2hex(random_bytes(32)));
                     $okMessages[] = 'Token de cron regenerado. Actualizá tu tarea programada con la nueva URL.';
@@ -459,7 +479,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                     $errors[] = 'Sección desconocida.';
                     break;
             }
-            if ($section !== '' && $section !== 'card_test' && count($errors) === $settingsErrorsBefore) {
+            if ($section !== '' && !in_array($section, ['card_test', 'mail_test'], true) && count($errors) === $settingsErrorsBefore) {
                 $settingsActor = Auth::user();
                 Audit::log(
                     $pdo,
@@ -537,7 +557,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         str_starts_with($postedSection, 'slide_') => 'homepage',
         str_starts_with($postedSection, 'bank_'), in_array($postedSection, ['cod', 'card', 'card_test'], true) => 'payments',
         $postedSection === 'shipping' => 'delivery',
-        $postedSection === 'mail' => 'notifications',
+        in_array($postedSection, ['mail', 'mail_test'], true) => 'notifications',
         $postedSection === 'cron_regen' => 'advanced',
         default => $settingsArea,
     };
@@ -888,6 +908,17 @@ $csrf = csrf_token();
       </label>
       <p class="sm:col-span-2"><button class="rounded-lg bg-[var(--primary)] px-4 py-2 text-sm font-semibold text-white hover:opacity-90" type="submit">Guardar correo</button></p>
     </form>
+    <form class="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4 sm:flex-row sm:items-end" method="post" action="index.php?r=admin/settings">
+      <input type="hidden" name="csrf" value="<?php echo esc($csrf); ?>">
+      <input type="hidden" name="section" value="mail_test">
+      <label class="block flex-1 text-sm font-medium text-slate-700">Enviar prueba a
+        <input class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/30" type="email" name="mail_test_to" maxlength="190" value="<?php echo esc((string) (Auth::user()['email'] ?? '')); ?>">
+      </label>
+      <button class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:opacity-90" type="submit">Enviar correo de prueba</button>
+    </form>
+    <?php if ($mailTestResult !== ''): ?>
+      <div class="mt-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"><?php echo esc($mailTestResult); ?></div>
+    <?php endif; ?>
   </div>
 <?php endif; ?>
 
