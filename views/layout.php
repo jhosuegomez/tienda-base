@@ -126,6 +126,8 @@ try {
 </head>
 <body class="<?php echo str_starts_with($route, 'admin/') ? 'admin-shell' : 'commerce-bagisto'; ?> min-h-screen bg-slate-100 text-slate-800 antialiased" data-theme="<?php echo esc($themePreset); ?>" data-route="<?php echo esc($route); ?>">
 <a class="skip-link" href="#contenido-principal">Saltar al contenido</a>
+<div class="shop-trustbar" aria-label="Beneficios"><span class="shop-trustbar-msg is-active">Envíos a toda Guatemala</span><span class="shop-trustbar-msg">Pagá por transferencia o contra entrega</span><span class="shop-trustbar-msg">Compra respaldada con garantía</span></div>
+<script>(function(){var m=document.querySelectorAll('.shop-trustbar-msg');if(m.length<2||matchMedia('(prefers-reduced-motion: reduce)').matches)return;var i=0;setInterval(function(){m[i].classList.remove('is-active');i=(i+1)%m.length;m[i].classList.add('is-active');},4000);})();</script>
 <header class="shop-header sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
   <div class="mx-auto flex w-full max-w-7xl items-center gap-4 px-4 py-4 lg:gap-8">
     <a class="group flex shrink-0 items-center gap-2.5 text-lg font-extrabold tracking-tight text-slate-950" href="index.php?r=home">
